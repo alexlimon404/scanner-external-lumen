@@ -23,6 +23,10 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
+if (class_exists('Laravel\Tinker\TinkerServiceProvider')) {
+    $app->register(Laravel\Tinker\TinkerServiceProvider::class);
+}
+
 // $app->withFacades();
 
 // $app->withEloquent();

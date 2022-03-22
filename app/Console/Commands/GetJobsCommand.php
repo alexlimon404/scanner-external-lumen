@@ -12,7 +12,7 @@ class GetJobsCommand extends Command
 
     public function handle()
     {
-        if (Queue::size() < 10) {
+        if (Queue::size() < 30) {
             GetExternalJob::run();
         };
     }

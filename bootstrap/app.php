@@ -52,6 +52,8 @@ $app->singleton(
     App\Console\Kernel::class
 );
 
+$app->register(Illuminate\Redis\RedisServiceProvider::class);
+
 /*
 |--------------------------------------------------------------------------
 | Register Config Files

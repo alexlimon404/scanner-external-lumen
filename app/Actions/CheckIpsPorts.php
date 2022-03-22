@@ -5,36 +5,34 @@ namespace App\Actions;
 use CurlHandle;
 use CurlMultiHandle;
 
-class CheckIpPorts extends Action
+class CheckIpsPorts extends Action
 {
-    protected int $task;
     protected array $ips;
-    protected int $port;
+    protected array $ports;
 
     private array $result = [];
 
-    public function __construct(int $task, array $ips, int $port)
+    public function __construct( array $ips, array $ports)
     {
-        $this->task = $task;
         $this->ips = $ips;
-        $this->port = $port;
+        $this->ports = $ports;
     }
 
-    public function handle1(): array
+    public function handle(): array
     {
-        for ($i = 1; $i <= 3; $i++) {
-            $this->create("{$this->task}-{$i}:234{$i}", $this->task, 'qweqweqqweqwe');
+        foreach ($this->ports as $port) {
+            $this->eachPort($port);
         }
 
         return $this->result;
     }
 
-    public function handle(): array
+    public function eachPort(int $port)
     {
         $mc = curl_multi_init();
 
         foreach ($this->ips as $ip) {
-            $ip_port = "{$ip}:{$this->port}";
+            $ip_port = "{$ip}:{$port}";
 
             $url = "http://{$ip_port}";
 
@@ -44,8 +42,6 @@ class CheckIpPorts extends Action
         }
 
         $this->process($mc);
-
-        return $this->result;
     }
 
     private function process(CurlMultiHandle $mc)
@@ -53,7 +49,9 @@ class CheckIpPorts extends Action
         while (($execrun = curl_multi_exec($mc, $running)) === CURLM_CALL_MULTI_PERFORM) ;
 
         while ($running && $execrun === CURLM_OK) {
-            if ($running && curl_multi_select($mc) !== -1) {
+            // https://bugs.php.net/bug.php?id=63411
+            // curl_multi_select($mc) !== -1 с багом
+            if ($running) {
                 do {
                     $execrun = curl_multi_exec($mc, $running);
                     // если поток завершился
@@ -106,8 +104,6 @@ class CheckIpPorts extends Action
     {
         [$ip, $port] = explode(':', $key);
 
-        $task = $this->task;
-
-        $this->result[] = compact('task', 'ip', 'port', 'status', 'data');
+        $this->result[] = compact('ip', 'port', 'status', 'data');
     }
 }

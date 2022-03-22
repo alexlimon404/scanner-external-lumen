@@ -43,7 +43,7 @@ class Scanner
         return $response->json();
     }
 
-    public function successJob($data)
+    public function successJob(array $data)
     {
         $response = $this->client()->post('external-jobs', [
             'data' => $data,

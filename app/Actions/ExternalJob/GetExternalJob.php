@@ -4,12 +4,10 @@ namespace App\Actions\ExternalJob;
 
 use App\Actions\Action;
 use App\Services\Scanner;
-use App\Actions\CheckIpPorts;
+use App\Jobs\CheckIpPortJob;
 
 class GetExternalJob extends Action
 {
-    private array $success_jobs;
-
     public function __construct()
     {
         //
@@ -23,11 +21,7 @@ class GetExternalJob extends Action
 
             $payload = json_decode($job['payload'], true)['data'];
 
-            $result = CheckIpPorts::run($job['task_id'], $payload['ips'], $payload['port']);
-
-            $this->success_jobs[$job['id']] = $result;
+            dispatch(new CheckIpPortJob($job['id'], $payload['ips'], $payload['ports']));
         }
-
-        return (new Scanner())->successJob($this->success_jobs);
     }
 }

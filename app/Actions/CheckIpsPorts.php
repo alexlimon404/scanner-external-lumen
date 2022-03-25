@@ -104,6 +104,8 @@ class CheckIpsPorts extends Action
     {
         [$ip, $port] = explode(':', $key);
 
+        $data = mb_substr($data, 0, 4096);
+
         $this->result[] = compact('ip', 'port', 'status', 'data');
     }
 }

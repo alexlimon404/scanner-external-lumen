@@ -12,7 +12,7 @@ class CheckIpsPorts extends Action
 
     private array $result = [];
 
-    public function __construct( array $ips, array $ports)
+    public function __construct(array $ips, array $ports)
     {
         $this->ips = $ips;
         $this->ports = $ports;
@@ -104,7 +104,7 @@ class CheckIpsPorts extends Action
     {
         [$ip, $port] = explode(':', $key);
 
-        $data = mb_substr($data, 0, 4096);
+        $data = mb_convert_encoding(mb_substr($data, 0, 8000), 'UTF-8', 'UTF-8');
 
         $this->result[] = compact('ip', 'port', 'status', 'data');
     }

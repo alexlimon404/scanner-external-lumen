@@ -104,7 +104,7 @@ class CheckIpsPorts extends Action
     {
         [$ip, $port] = explode(':', $key);
 
-        $data = mb_convert_encoding(mb_substr($data, 0, 8000), 'UTF-8', 'UTF-8');
+        $data = mb_convert_encoding(mb_substr($data, 0, 3000), 'UTF-8', 'UTF-8');
 
         $this->result[] = compact('ip', 'port', 'status', 'data');
     }

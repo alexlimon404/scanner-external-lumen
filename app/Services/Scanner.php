@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Version;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\PendingRequest;
@@ -29,6 +30,7 @@ class Scanner
             'accept' => 'application/json',
             'unique' => $this->config('unique_id'),
             'token' => $this->config('auth_token'),
+            'app_version' => Version::$version,
         ])->baseUrl("{$this->config('api_url')}/api");
     }
 

@@ -7,15 +7,10 @@ use CurlMultiHandle;
 
 class CheckIpsPorts extends Action
 {
-    protected array $ips;
-    protected array $ports;
-
     private array $result = [];
 
-    public function __construct(array $ips, array $ports)
+    public function __construct(private array $ips, private array $ports, private $timeout = 5)
     {
-        $this->ips = $ips;
-        $this->ports = $ports;
     }
 
     public function handle(): array
@@ -85,14 +80,14 @@ class CheckIpsPorts extends Action
             curl_setopt($ch, CURLOPT_PROXY, $proxy);
         }
         curl_setopt($ch, CURLOPT_HEADER, 1);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->timeout);
 
         curl_setopt($ch, CURLOPT_PRIVATE, $identifier);
         //curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxyauth);
         //curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);  // If url has redirects then go to the final redirected URL.
         //curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5); // If expected to call with specific PROXY type
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
         if (!is_null($proxy_type)) {
             curl_setopt($ch, CURLOPT_PROXYTYPE, $proxy_type);
         }

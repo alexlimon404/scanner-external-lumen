@@ -30,7 +30,7 @@ class Scanner
             'accept' => 'application/json',
             'unique' => $this->config('unique_id'),
             'token' => $this->config('auth_token'),
-            'app_version' => Version::$version,
+            'app-version' => Version::$version,
         ])->baseUrl("{$this->config('api_url')}/api");
     }
 

@@ -4,5 +4,5 @@ namespace App;
 
 class Version
 {
-    public static string $version = '0.10';
+    public static string $version = '0.11';
 }

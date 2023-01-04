@@ -19,9 +19,7 @@ class GetExternalJob extends Action
 
         foreach ($jobs['data'] as $job) {
 
-            $payload = json_decode($job['payload'], true)['data'];
-
-            dispatch(new CheckIpPortJob($job['id'], $payload));
+            dispatch(new CheckIpPortJob($job['id'], $job['payload']['data']));
         }
     }
 }

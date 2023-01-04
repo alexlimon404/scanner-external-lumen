@@ -49,6 +49,7 @@ class Scanner
     {
         $response = $this->client()->post('external-jobs', [
             'data' => $data,
+            'type' => $this->config('type'),
         ]);
 
         $response->throw();

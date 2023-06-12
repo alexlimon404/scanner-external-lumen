@@ -31,6 +31,7 @@ class Scanner
             'unique' => $this->config('unique_id'),
             'token' => $this->config('auth_token'),
             'app-version' => Version::$version,
+            'app-type' => 'lumen',
         ])->baseUrl("{$this->config('api_url')}/api");
     }
 
@@ -38,7 +39,6 @@ class Scanner
     {
         $response = $this->client()->get('external-jobs', [
             'limit' => $this->config('limit'),
-            'type' => $this->config('type'),
         ]);
 
         $response->throw();
@@ -49,7 +49,6 @@ class Scanner
     {
         $response = $this->client()->post('external-jobs', [
             'data' => $data,
-            'type' => $this->config('type'),
         ]);
 
         $response->throw();

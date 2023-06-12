@@ -13,7 +13,12 @@ class CheckIpPortJob extends Job
 
     public function handle()
     {
-        $results = CheckIpsPorts::run($this->payload['ips'], $this->payload['ports'], $this->payload['timeout'] ?? 5);
+        $results = CheckIpsPorts::run(
+            $this->payload['ips'],
+            $this->payload['ports'],
+            $this->payload['timeout'] ?? 5,
+            $this->payload['length'] ?? 3000,
+        );
 
         (new Scanner())->successJob([
             $this->job_id => $results
